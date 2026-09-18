@@ -45,6 +45,10 @@ def main():
                      f"Optional. Create a free account at elevenlabs.io, make an API key, and put ELEVENLABS_API_KEY=<key> in {os.path.join(WORKSPACE, '.env')}. Silent ads work without it."))
     products = list_products()
     rows.append(("Products", ", ".join(products) or "none yet", None))
+    libf = os.path.join(WORKSPACE, "music", "library.json")
+    ntracks = len(json.load(open(libf, encoding="utf-8"))["tracks"]) if os.path.exists(libf) else 0
+    rows.append(("Music library", f"{ntracks} tracks" if ntracks else "empty, ads will get a placeholder bed",
+                 None if ntracks else f"Optional. Run: python \"{os.path.join(ROOT, 'tools', 'music.py')}\"  to fetch free tracks by mood"))
     rows.append(("Workspace", WORKSPACE, None))
 
     in_progress = []
@@ -53,12 +57,12 @@ def main():
         in_progress.append({"ad": os.path.basename(os.path.dirname(f)), "product": os.path.basename(os.path.dirname(os.path.dirname(f))),
                             "gate": st.get("gate"), "updated": st.get("updated"), "files": st.get("files")})
 
-    needed = [r for r in rows if r[2] and r[0] != "Voice service"]
+    needed = [r for r in rows if r[2] and r[0] not in ("Voice service", "Music library")]
     ok = not needed
     if as_json:
         print(json.dumps({"ok": ok, "checks": [{"item": r[0], "status": r[1], "fix": r[2]} for r in rows], "ads": in_progress}, indent=1)); sys.exit(0 if ok else 1)
     for name, status, fix in rows:
-        print(f"{'ready ' if fix is None else ('note  ' if name == 'Voice service' else 'FIX   ')} {name:<16} {status}")
+        print(f"{'ready ' if fix is None else ('note  ' if name in ('Voice service', 'Music library') else 'FIX   ')} {name:<16} {status}")
         if fix: print(f"       {fix}")
     if in_progress:
         print("\nAds on file:")

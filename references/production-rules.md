@@ -75,12 +75,14 @@ Logo and web address appear only on the opener and the closer. Never on feature 
 
 - **Plan at 2.1 words per second** for generated voices, pauses included. The craft target for a human read is 2.5 to 2.7. The check stage prints a word budget per deliverable.
 - **Check timing before the first render.** `check` and `plan` cost nothing. `voice` costs a few hundred characters and must pass before any render.
-- If a deliverable runs long, shorten the lines. Do not push voice speed above 1.15.
+- If a deliverable runs long, shorten the lines. Speed is not a setting on the current model.
 - If the closer would hold much longer than its target, the script has room. The plan says how many words.
 - One clause per scene. Cuts land just before each line. Cues land on their words. The voice stage does both from the real audio.
 - Never read the web address aloud.
+- Voice model `eleven_v3` with the American recommended mix in `references/voices.md`. One delivery tag at most per line, only where the read needs a push. Tags are never spoken and are stripped from captions.
 - Music at about 18 percent under the voice, fading out over the last 1.2 seconds. Two-pass loudness to minus 14 LUFS, true peak at or under minus 1.5.
-- If no licensed track is in `products/<name>/audio/`, a placeholder bed is used and every report says so.
+- Music comes from the workspace library `music/library.json`, chosen per concept by mood: `music` on each deliverable names a mood (calm, confident, upbeat, warm, tense) or a file. Different concepts get different tracks. If the library is empty, a placeholder bed is used and every report says so; `tools/music.py` fills the library with free tracks.
+- A product may still carry its own track in `products/<name>/audio/`; it wins over the library when no mood is set.
 
 ## Frame rates
 - YouTube files: 30 fps.

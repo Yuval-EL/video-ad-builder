@@ -8,18 +8,18 @@ One file describes one ad and every file it produces. The builder writes it afte
 | `name` | Ad name, used for the folder |
 | `product` | Folder name under `products/`. Brand colors, font, and logo come from its `brand.json`. |
 | `playbook`, `patterns` | Which playbook and which pattern IDs the ad uses |
-| `voice` | Default voice: id, model, settings. Speed at most 1.15. |
+| `voice` | Default voice: id, model `eleven_v3`, settings. See `references/voices.md`. |
 | `voices` | Named voices, for example `daniel` and `sarah`. A deliverable picks one with `voice`. |
 | `scenes` | Every scene, keyed by id |
 | `deliverables` | Named orderings of scenes with a duration: the hook variants and the cutdowns |
 | `kit` | The files to produce: deliverable, format, folder, optional fps |
 | `ad_text` | Headlines of at most 40 characters and descriptions of at most 35 |
-| `music` | Optional path to a licensed track |
+| `music` | Optional default mood or file for the whole ad. Each deliverable can set its own `music`: a mood from the workspace library (calm, confident, upbeat, warm, tense) or a file name. |
 
 ## Every scene has
 - `type`: one of the types below.
 - `bg`: a color role from the brand: `dark`, `primary`, `accent`, `soft1`, `soft2`.
-- `vo`: the voice line for this scene. One clause. Optional only for scenes used in silent deliverables.
+- `vo`: the voice line for this scene. One clause. May carry one delivery tag in square brackets, for example `[confident] Right there.` Optional only for scenes used in silent deliverables.
 - `hold`: seconds the scene stays in a silent deliverable. Ignored in voiced ones.
 - `cues`: optional. Names mapped to a word in `vo`. Elements that reference the name land on that word.
 

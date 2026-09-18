@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0, 2026-09-18
+
+- American voice defaults and a livelier read on the expressive model, with optional delivery tags.
+- Music library by mood, fetched from free stock music, a different track per concept.
+- Question 1 is free text: company name, website, and anything relevant. Capabilities are read from the website and confirmed.
+
 ## 1.0.0, 2026-09-18
 
 First release.

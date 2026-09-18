@@ -24,14 +24,12 @@
     "I4"
   ],
   "voice": {
-    "voice_id": "onwK4e9ZLuTAKqWW03F9",
-    "voice_name": "Daniel",
-    "model": "eleven_multilingual_v2",
+    "voice_id": "cjVigY5qzO86Huf0OWal",
+    "voice_name": "Eric",
+    "model": "eleven_v3",
     "settings": {
-      "stability": 0.55,
-      "similarity_boost": 0.75,
-      "style": 0.1,
-      "speed": 1.15
+      "stability": 0.5,
+      "similarity_boost": 0.75
     }
   },
   "scenes": {
@@ -110,7 +108,7 @@
         "text": "Resolved in 41 sec · no ticket",
         "cue": "badge"
       },
-      "vo": "so requests get handled. Right there.",
+      "vo": "so requests get handled. [confident] Right there.",
       "cues": {
         "reply": "handled",
         "badge": "Right"
@@ -300,7 +298,8 @@
       ],
       "hook_pattern": "A1 pain question",
       "concept": "the-moment",
-      "voice": "daniel"
+      "voice": "eric",
+      "music": "confident"
     },
     "30s-hookB": {
       "duration": 30,
@@ -315,7 +314,8 @@
       ],
       "hook_pattern": "I1 number first",
       "concept": "the-moment",
-      "voice": "daniel"
+      "voice": "eric",
+      "music": "confident"
     },
     "30s-hookC": {
       "duration": 30,
@@ -330,7 +330,8 @@
       ],
       "hook_pattern": "D4 the moment",
       "concept": "the-moment",
-      "voice": "daniel"
+      "voice": "eric",
+      "music": "confident"
     },
     "15s": {
       "duration": 15,
@@ -341,7 +342,8 @@
         "closer"
       ],
       "concept": "the-moment",
-      "voice": "daniel"
+      "voice": "eric",
+      "music": "confident"
     },
     "06s-bumper": {
       "duration": 6,
@@ -350,7 +352,8 @@
         "closer6"
       ],
       "concept": "the-moment",
-      "voice": "daniel"
+      "voice": "eric",
+      "music": "confident"
     },
     "30s-silent": {
       "duration": 30,
@@ -366,7 +369,8 @@
       ],
       "concept": "silent-scroller",
       "silent": true,
-      "bet": "Built for muted feeds."
+      "bet": "Built for muted feeds.",
+      "music": "upbeat"
     }
   },
   "kit": [
@@ -428,15 +432,22 @@
     ]
   },
   "voices": {
-    "daniel": {
-      "voice_id": "onwK4e9ZLuTAKqWW03F9",
-      "voice_name": "Daniel",
-      "model": "eleven_multilingual_v2",
+    "eric": {
+      "voice_id": "cjVigY5qzO86Huf0OWal",
+      "voice_name": "Eric",
+      "model": "eleven_v3",
       "settings": {
-        "stability": 0.55,
-        "similarity_boost": 0.75,
-        "style": 0.1,
-        "speed": 1.15
+        "stability": 0.5,
+        "similarity_boost": 0.75
+      }
+    },
+    "sarah": {
+      "voice_id": "EXAVITQu4vr4xnSDxMaL",
+      "voice_name": "Sarah",
+      "model": "eleven_v3",
+      "settings": {
+        "stability": 0.5,
+        "similarity_boost": 0.75
       }
     }
   },

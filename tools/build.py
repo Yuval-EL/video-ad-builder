@@ -13,7 +13,7 @@ Stages, in the order the builder runs them:
 
 The voice key is read from .env and never printed.
 """
-import base64, hashlib, json, os, re, subprocess, sys, urllib.request
+import base64, hashlib, json, os, re, subprocess, sys, urllib.error, urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from paths import ROOT, WORKSPACE, product_dir, voice_key  # noqa: E402
@@ -51,7 +51,13 @@ def timing_params(duration):
 
 
 # ---------------------------------------------------------------- timeline
+def plain(text):
+    """The words that are actually spoken: delivery tags such as [confident] removed."""
+    return re.sub(r"\s{2,}", " ", re.sub(r"\[[^\]]*\]", "", text or "")).strip()
+
+
 def estimate_spoken(text):
+    text = plain(text)
     words = len(text.split()); stops = max(0, len(re.findall(r"[.?!]", text)) - 1)
     return max(0.7, words / 2.3 + 0.35 * stops)
 
@@ -108,11 +114,11 @@ def timeline(ad, name, clips=None):
     brand = ad["brand"]["name"].lower().split()[0]
     brand_at = next((round(starts[i] + cue_offset(sc[i], brand, spoken[i], clips[i]["alignment"] if clips else None), 2)
                      for i in ids if brand in sc[i]["vo"].lower()), None)
-    words = sum(len(sc[i]["vo"].split()) for i in ids)
+    words = sum(len(plain(sc[i]["vo"]).split()) for i in ids)
     info = {"deliverable": name, "duration": D, "words": words, "word_budget": int((D - tp["lead_in"] - tp["hold"] - tp["min_gap"] * gaps) * PLAN_WPS),
             "spoken": round(total, 2), "gap": round(gap, 2), "voice_ends": round(voice_end, 2), "closer_hold": round(D - voice_end, 2),
             "over_by": round(over, 2), "brand_spoken_at": brand_at,
-            "lines": [{"id": i, "start": round(starts[i], 2), "end": round(starts[i] + spoken[i], 2), "text": sc[i]["vo"]} for i in ids]}
+            "lines": [{"id": i, "start": round(starts[i], 2), "end": round(starts[i] + spoken[i], 2), "text": plain(sc[i]["vo"])} for i in ids]}
     return sched, info
 
 
@@ -222,9 +228,16 @@ def stage_voice(ad, ad_dir, only=None):
                 body = {"text": text, "model_id": v.get("model", "eleven_multilingual_v2"), "voice_settings": v.get("settings", {}),
                         "previous_text": " ".join(ad["scenes"][x]["vo"] for x in ids[:n])[-300:], "next_text": " ".join(ad["scenes"][x]["vo"] for x in ids[n + 1:])[:300]}
                 body = {k: val for k, val in body.items() if val != ""}
+                if str(body["model_id"]).startswith("eleven_v3"):   # v3 does not accept surrounding context yet
+                    body.pop("previous_text", None); body.pop("next_text", None)
                 req = urllib.request.Request(f"https://api.elevenlabs.io/v1/text-to-speech/{v['voice_id']}/with-timestamps?output_format=mp3_44100_128",
                                              data=json.dumps(body).encode(), method="POST", headers={"xi-api-key": key, "Content-Type": "application/json"})
-                res = json.load(urllib.request.urlopen(req, timeout=120))
+                try:
+                    res = json.load(urllib.request.urlopen(req, timeout=120))
+                except urllib.error.HTTPError as e:
+                    try: msg = json.load(e).get("detail", {}).get("message", "")
+                    except Exception: msg = ""
+                    sys.exit(f"The voice service refused the line \"{text[:50]}\" ({e.code}). {msg}".strip())
                 open(mp3, "wb").write(base64.b64decode(res["audio_base64"]))
                 json.dump({"text": text, "alignment": res["alignment"]}, open(meta, "w")); used += len(text)
             al = json.load(open(meta))["alignment"]
@@ -257,9 +270,27 @@ def srt(t):
     return f"{hh:02}:{mm:02}:{ss:02},{ms:03}"
 
 
-def find_music(ad, ad_dir, D):
+def library_track(want):
+    """A track from <workspace>/music/library.json by mood or by file name. Rotates within a mood."""
+    libf = os.path.join(WORKSPACE, "music", "library.json")
+    if not want or not os.path.exists(libf): return None
+    lib = json.load(open(libf, encoding="utf-8"))["tracks"]
+    hits = [t for t in lib if t["file"] == want] or [t for t in lib if t["mood"] == want]
+    if not hits: return None
+    library_track.n = getattr(library_track, "n", 0) + 1
+    t = hits[library_track.n % len(hits)]
+    p = os.path.join(WORKSPACE, "music", t["file"])
+    return p if os.path.exists(p) else None
+
+
+def find_music(ad, ad_dir, D, name=None):
     adir = os.path.join(ad["_pdir"], "audio")
-    if ad.get("music"): return os.path.join(WORKSPACE, ad["music"]), False
+    want = (ad["deliverables"][name].get("music") if name else None) or ad.get("music")
+    if want:
+        t = library_track(want)
+        if t: return t, False
+        p = os.path.join(WORKSPACE, want)
+        if os.path.exists(p): return p, False
     if os.path.isdir(adir):
         for f in sorted(os.listdir(adir)):
             if f.lower().endswith((".mp3", ".wav", ".m4a")): return os.path.join(adir, f), False
@@ -284,7 +315,7 @@ def stage_kit(ad, ad_dir, only=None):
         D = schedules[k["d"]]["duration"]; fps = k.get("fps", 30)
         picture = work(ad_dir, f"silent-{k['d']}-{k['fmt']}.mp4")
         node("render.js", player, picture, k["d"], k["fmt"], fps)
-        music, placeholder = find_music(ad, ad_dir, D)
+        music, placeholder = find_music(ad, ad_dir, D, k["d"])
         mixed = work(ad_dir, f"mix-{k['d']}.wav")
         if silent and not os.path.exists(mixed):
             fade = min(1.2, D / 5)

@@ -31,6 +31,7 @@ You are running a product. The user answers questions, gets a kit. They never re
 Run `python "${CLAUDE_PLUGIN_ROOT}/tools/doctor.py" --json`. Read it.
 - Anything with a fix, except the voice service: relay each fix in one sentence and stop.
 - Voice service missing: say once that voiced ads need a key and silent ads do not, with the fix, then continue.
+- Music library empty: offer to fetch free tracks now, `python "${CLAUDE_PLUGIN_ROOT}/tools/music.py"`, about a minute. If declined, continue with the placeholder bed.
 - If `ads` is empty and the workspace has no products beyond `sample`, this is a first run: offer "Try the demo" (about two minutes, no account needed) or "Start an ad."
 
 ## Step 1. Where were we
@@ -64,8 +65,8 @@ One short message: proposed ad name, product, mode (screenshots or illustrated),
 After the go, run to the finished kit without stopping again.
 
 ## Step 4. Write
-Read `${CLAUDE_PLUGIN_ROOT}/references/production-rules.md`, the chosen playbooks in `references/playbooks/`, `references/pattern-library.md`, and `references/ad-spec.md`. Write `output/<product>/<ad>/ad.json`:
-- One deliverable set per concept, each with `concept` and its own `voice` from `voices`. Concepts are different stories. The first narrated concept gets three openings with different hook patterns, each with `hook_pattern` and a one-line `bet`. A silent concept sets `silent: true` and `hold` on its scenes.
+Read `${CLAUDE_PLUGIN_ROOT}/references/production-rules.md`, the chosen playbooks in `references/playbooks/`, `references/pattern-library.md`, `references/voices.md`, and `references/ad-spec.md`. Write `output/<product>/<ad>/ad.json`:
+- One deliverable set per concept, each with `concept`, its own `voice` from `voices` (ids and the recommended mix in `references/voices.md`), and its own `music` mood, a different one per concept. Concepts are different stories. Add a delivery tag to a line only where the read needs a push. The first narrated concept gets three openings with different hook patterns, each with `hook_pattern` and a one-line `bet`. A silent concept sets `silent: true` and `hold` on its scenes.
 - A 15 second cutdown with shorter lines and a 6 second bumper when the full kit was chosen.
 - `claims`: every number, integration, and capability, with source and status. Anything invented for a scene is marked illustrative.
 - `ad_text` within the platform limits. Plan lines at 2.1 words per second.

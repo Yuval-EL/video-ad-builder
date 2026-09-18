@@ -28,7 +28,9 @@ def main():
     ensure_workspace()
     print(f"  {WORKSPACE}")
     print("  products/ for your saved products, output/ for finished ads, .env for the voice key")
-    print("\n3. Check")
+    print("\n3. Music library")
+    run([sys.executable, os.path.join(ROOT, "tools", "music.py")])
+    print("\n4. Check")
     subprocess.run([sys.executable, os.path.join(ROOT, "tools", "doctor.py")])
     print("\nNext: open Claude Code in this folder and run /video-ad-builder")
 

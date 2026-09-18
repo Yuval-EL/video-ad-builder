@@ -43,6 +43,10 @@ python <path-to>/video-ad-builder/tools/install-local.py
 
 That writes the skill into the folder's `.claude/skills/` and `/video-ad-builder` works there.
 
+## Music
+
+Setup fetches a small library of free tracks by mood from Mixkit, licensed for commercial video with no attribution. The builder picks a different track per concept. Add your own tracks to `music/` any time, or a product's own track to its `audio/` folder.
+
 ## Voice
 
 Voiced ads use ElevenLabs. The free plan covers about twenty 30 second voiceovers a month.

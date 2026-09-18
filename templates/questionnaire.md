@@ -18,14 +18,15 @@ Ten questions. Ask one at a time with selectable options. Every question has a d
 | 5 | What tone? | Calm and confident. Warm and conversational. Energetic. Other. | Calm and confident | Yes |
 | 6 | Which capabilities should it feature? You can choose more than one. | Filled from the product's website: the capabilities found on the page, with the builder's pick of two to four marked. The user confirms, drops, or adds. Saved capability briefs, if any, are listed first. | The builder's pick | Yes, cross-checked with the website |
 | 7 | Where will it run, and how long? | YouTube, LinkedIn, or both. 15, 30, or 59 seconds for the master. | YouTube and LinkedIn, 30 seconds | Only if passed as input |
-| 8 | Which voices? You can choose more than one. | **Recommended mix**: one voice per concept, so the kit sounds like a bank and not one reader. Or pick from the available voices with one-line descriptions. Skipped if only Silent Scroller was chosen. | Recommended mix | Only if passed as input |
+| 8 | Which voices? You can choose more than one. | **Recommended mix**: Eric for the narrated demo, Sarah for proof-led, Brian for a third, all American, one voice per concept so the kit sounds like a bank and not one reader. Then the other American voices from `references/voices.md`, each with its one-line register. British and Australian voices only if the user asks. Skipped if only Silent Scroller was chosen. | Recommended mix | Only if passed as input |
 | 9 | Opening and closing lines | Shows the product's current closing line and button text. Keep or change. | Keep | No |
 | 10 | Which files do you want? | **Full kit**: every chosen concept in widescreen, plus vertical and square, a 15 second cutdown, a 6 second bumper, captions, thumbnail, ad text. **Master only.** **Let me pick.** | Full kit | No |
 
 ## Rules behind questions 2 and 8
 - Concepts are different stories, not different openings. Only the first narrated concept gets the three-opening test.
 - Voices change between concepts and never between the openings of one concept. If the voice changed with the opening, the test would measure the voice.
-- The recommended voice mix pairs each concept with a register that suits it: steady for the narrated demo, reassuring for proof-led, and none for the silent version.
+- The recommended voice mix pairs each concept with a register that suits it: smooth and trustworthy for the narrated demo, reassuring for proof-led, deep for a third, and none for the silent version.
+- Music is picked per concept by mood from the workspace library: confident for the narrated demo, calm for proof-led, upbeat for the silent version. The user is not asked; the campaign plan names the track.
 
 ## After the last answer
 - Run the material check. Screenshots present means screenshot mode, none means illustrated mode. Say which, once.
