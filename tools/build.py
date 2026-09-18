@@ -9,7 +9,7 @@ Stages, in the order the builder runs them:
   stills   Review stills. Options: --d <deliverable> --fmt <16x9|9x16|1x1>. Default: first kit entry.
   master   Silent render of the first kit entry, for the concept review gate.
   voice    Generate the voice, re-time every deliverable to the real speech, write captions.
-  kit      Render and finish every kit entry. Option: --only <deliverable>:<fmt> to build one.
+  kit      Render and finish every kit entry. Options: --only <deliverable>:<fmt> to build one, --audio-only to re-mix without re-rendering.
 
 The voice key is read from .env and never printed.
 """
@@ -270,15 +270,16 @@ def srt(t):
     return f"{hh:02}:{mm:02}:{ss:02},{ms:03}"
 
 
-def library_track(want):
-    """A track from <workspace>/music/library.json by mood or by file name. Rotates within a mood."""
+def library_track(want, key=""):
+    """A track from <workspace>/music/library.json by mood or by file name.
+    Within a mood the pick is fixed by `key` (the concept), so every version of one concept shares a track
+    and different concepts get different tracks."""
     libf = os.path.join(WORKSPACE, "music", "library.json")
     if not want or not os.path.exists(libf): return None
     lib = json.load(open(libf, encoding="utf-8"))["tracks"]
     hits = [t for t in lib if t["file"] == want] or [t for t in lib if t["mood"] == want]
     if not hits: return None
-    library_track.n = getattr(library_track, "n", 0) + 1
-    t = hits[library_track.n % len(hits)]
+    t = hits[sum(ord(c) for c in key) % len(hits)]
     p = os.path.join(WORKSPACE, "music", t["file"])
     return p if os.path.exists(p) else None
 
@@ -287,7 +288,7 @@ def find_music(ad, ad_dir, D, name=None):
     adir = os.path.join(ad["_pdir"], "audio")
     want = (ad["deliverables"][name].get("music") if name else None) or ad.get("music")
     if want:
-        t = library_track(want)
+        t = library_track(want, ad["deliverables"][name].get("concept", "") if name else "")
         if t: return t, False
         p = os.path.join(WORKSPACE, want)
         if os.path.exists(p): return p, False
@@ -302,7 +303,7 @@ def find_music(ad, ad_dir, D, name=None):
     return out, True
 
 
-def stage_kit(ad, ad_dir, only=None):
+def stage_kit(ad, ad_dir, only=None, audio_only=False):
     f = work(ad_dir, "schedules.json")
     schedules = json.load(open(f)) if os.path.exists(f) else {}
     for n in ad["deliverables"]:
@@ -314,7 +315,8 @@ def stage_kit(ad, ad_dir, only=None):
         if schedules[k["d"]]["source"] not in ("voice", "silent"): sys.exit(f"{k['d']} has no voice timing yet. Run the voice stage first.")
         D = schedules[k["d"]]["duration"]; fps = k.get("fps", 30)
         picture = work(ad_dir, f"silent-{k['d']}-{k['fmt']}.mp4")
-        node("render.js", player, picture, k["d"], k["fmt"], fps)
+        if audio_only and os.path.exists(picture): print("  keeping picture", os.path.basename(picture))
+        else: node("render.js", player, picture, k["d"], k["fmt"], fps)
         music, placeholder = find_music(ad, ad_dir, D, k["d"])
         mixed = work(ad_dir, f"mix-{k['d']}.wav")
         if silent and not os.path.exists(mixed):
@@ -374,7 +376,7 @@ def main():
     elif stage == "stills": stage_stills(ad, ad_dir, opts.get("--d"), opts.get("--fmt"))
     elif stage == "master": stage_master(ad, ad_dir)
     elif stage == "voice":  stage_voice(ad, ad_dir, opts.get("--only"))
-    elif stage == "kit":    stage_kit(ad, ad_dir, opts.get("--only"))
+    elif stage == "kit":    stage_kit(ad, ad_dir, opts.get("--only"), "--audio-only" in sys.argv)
     else: sys.exit(__doc__)
 
 
