@@ -1,0 +1,450 @@
+{
+  "name": "same-ticket",
+  "product": "sample",
+  "note": "Example ad spec for a fictional product. Shows three hooks on one body, two cutdowns, and a full kit.",
+  "playbook": "narrated-demo",
+  "patterns": [
+    "A1",
+    "B1",
+    "B5",
+    "C1",
+    "D4",
+    "D8",
+    "D5",
+    "E1",
+    "E2",
+    "E4",
+    "E5",
+    "E10",
+    "G1",
+    "G7",
+    "H2",
+    "H3",
+    "I1",
+    "I4"
+  ],
+  "voice": {
+    "voice_id": "onwK4e9ZLuTAKqWW03F9",
+    "voice_name": "Daniel",
+    "model": "eleven_multilingual_v2",
+    "settings": {
+      "stability": 0.55,
+      "similarity_boost": 0.75,
+      "style": 0.1,
+      "speed": 1.15
+    }
+  },
+  "scenes": {
+    "hookA": {
+      "type": "hook-text",
+      "bg": "dark",
+      "text": "Still answering the same ticket twice?",
+      "vo": "Still answering the same ticket twice?"
+    },
+    "hookB": {
+      "type": "number",
+      "bg": "accent",
+      "value": 80,
+      "suffix": "%",
+      "label": "of requests closed without a person",
+      "source": "Sample figure",
+      "cue": "count",
+      "vo": "Eight in ten requests never need a person.",
+      "cues": {
+        "count": "Eight"
+      }
+    },
+    "hookC": {
+      "type": "conversation",
+      "bg": "primary",
+      "channel": "# it-help",
+      "messages": [
+        {
+          "who": "Dana Reyes",
+          "meta": "Finance · 9:12",
+          "text": "Can I get a design license? I start on the deck today."
+        },
+        {
+          "who": "Lumen Desk",
+          "meta": "agent · 9:12",
+          "bot": true,
+          "cue": "reply",
+          "text": "**Done.** License assigned and your manager was notified."
+        }
+      ],
+      "vo": "Someone just asked Lumen Desk for a license. Already done.",
+      "cues": {
+        "reply": "Already"
+      }
+    },
+    "pivot": {
+      "type": "pivot",
+      "bg": "primary",
+      "from": "dark",
+      "chips": [
+        "# it-help · chat",
+        "IT Support · channel"
+      ],
+      "tag": "Lumen Desk agent",
+      "vo": "Lumen Desk puts agents inside your team chat,"
+    },
+    "convo": {
+      "type": "conversation",
+      "bg": "primary",
+      "channel": "# it-help",
+      "messages": [
+        {
+          "who": "Dana Reyes",
+          "meta": "Finance · 9:12",
+          "text": "Can I get a design license? I start on the deck today."
+        },
+        {
+          "who": "Lumen Desk",
+          "meta": "agent · 9:12",
+          "bot": true,
+          "cue": "reply",
+          "text": "**Done.** License assigned and your manager was notified. It renews with your team's plan in March."
+        }
+      ],
+      "badge": {
+        "text": "Resolved in 41 sec · no ticket",
+        "cue": "badge"
+      },
+      "vo": "so requests get handled. Right there.",
+      "cues": {
+        "reply": "handled",
+        "badge": "Right"
+      },
+      "hold": 5
+    },
+    "flow": {
+      "type": "workflow",
+      "bg": "soft2",
+      "title": "What the agent does",
+      "steps": [
+        {
+          "title": "Request in chat",
+          "sub": "Plain language, no form"
+        },
+        {
+          "title": "Policy check",
+          "sub": "Role, team, approval rules",
+          "cue": "c2"
+        },
+        {
+          "title": "Access granted",
+          "sub": "Time-boxed by default",
+          "cue": "c3"
+        },
+        {
+          "title": "Logged for audit",
+          "sub": "Every step, searchable",
+          "cue": "c4"
+        }
+      ],
+      "vo": "The agent checks policy, grants access, and logs it.",
+      "cues": {
+        "c2": "checks",
+        "c3": "grants",
+        "c4": "logs"
+      },
+      "hold": 5
+    },
+    "pills": {
+      "type": "pills",
+      "bg": "soft1",
+      "items": [
+        {
+          "label": "Laptop replacement",
+          "cue": "p1"
+        },
+        {
+          "label": "Software licenses",
+          "cue": "p2"
+        },
+        {
+          "label": "New hire onboarding",
+          "cue": "p3"
+        },
+        {
+          "label": "60+ ready-made agents",
+          "cue": "p4",
+          "dark": true
+        }
+      ],
+      "vo": "Laptops. Licenses. Onboarding. Same story.",
+      "cues": {
+        "p1": "Laptops",
+        "p2": "Licenses",
+        "p3": "Onboarding",
+        "p4": "Same"
+      },
+      "hold": 4
+    },
+    "number": {
+      "type": "number",
+      "bg": "accent",
+      "value": 80,
+      "suffix": "%",
+      "label": "of requests closed without a ticket",
+      "source": "Sample figure",
+      "cue": "count",
+      "vo": "Eight in ten requests, closed without a ticket.",
+      "cues": {
+        "count": "Eight"
+      },
+      "hold": 4
+    },
+    "shield": {
+      "type": "shield",
+      "bg": "primary",
+      "layers": 4,
+      "label": "Access controls and full audit trail",
+      "vo": "With the controls security expects."
+    },
+    "closer": {
+      "type": "closer",
+      "bg": "dark",
+      "line": "IT requests, closed where they start.",
+      "button": "Book a demo",
+      "url": "lumendesk.example",
+      "vo": "Lumen Desk. Book a demo.",
+      "hold": 3.5
+    },
+    "hook15": {
+      "type": "hook-text",
+      "bg": "dark",
+      "text": "Same ticket. Again?",
+      "typeDur": 1.0,
+      "vo": "Same ticket, again?"
+    },
+    "convo15": {
+      "type": "conversation",
+      "bg": "primary",
+      "channel": "# it-help",
+      "messages": [
+        {
+          "who": "Dana Reyes",
+          "meta": "Finance · 9:12",
+          "text": "Can I get a design license?"
+        },
+        {
+          "who": "Lumen Desk",
+          "meta": "agent · 9:12",
+          "bot": true,
+          "cue": "reply",
+          "text": "**Done.** License assigned. Manager notified."
+        }
+      ],
+      "badge": {
+        "text": "Resolved in 41 sec · no ticket",
+        "cue": "badge"
+      },
+      "vo": "Lumen Desk handles it in chat.",
+      "cues": {
+        "reply": "handles",
+        "badge": "chat"
+      }
+    },
+    "number6": {
+      "type": "number",
+      "bg": "accent",
+      "value": 80,
+      "suffix": "%",
+      "label": "of IT requests closed in chat",
+      "source": "Sample figure",
+      "cue": "count",
+      "vo": "Eight in ten IT requests, closed in chat.",
+      "cues": {
+        "count": "Eight"
+      }
+    },
+    "closer6": {
+      "type": "closer",
+      "bg": "dark",
+      "button": "Book a demo",
+      "url": "lumendesk.example",
+      "vo": "Lumen Desk."
+    },
+    "t1": {
+      "type": "text-card",
+      "bg": "dark",
+      "text": "Still answering the *same* ticket twice?",
+      "hold": 3
+    },
+    "t2": {
+      "type": "text-card",
+      "bg": "primary",
+      "text": "Lumen Desk puts *agents* in your team chat.",
+      "hold": 3
+    },
+    "t7": {
+      "type": "text-card",
+      "bg": "primary",
+      "text": "Every step *logged*.",
+      "hold": 2.5
+    }
+  },
+  "deliverables": {
+    "30s-hookA": {
+      "duration": 30,
+      "scenes": [
+        "hookA",
+        "pivot",
+        "convo",
+        "flow",
+        "pills",
+        "number",
+        "shield",
+        "closer"
+      ],
+      "hook_pattern": "A1 pain question",
+      "concept": "the-moment",
+      "voice": "daniel"
+    },
+    "30s-hookB": {
+      "duration": 30,
+      "scenes": [
+        "hookB",
+        "pivot",
+        "convo",
+        "flow",
+        "pills",
+        "shield",
+        "closer"
+      ],
+      "hook_pattern": "I1 number first",
+      "concept": "the-moment",
+      "voice": "daniel"
+    },
+    "30s-hookC": {
+      "duration": 30,
+      "scenes": [
+        "hookC",
+        "pivot",
+        "flow",
+        "pills",
+        "number",
+        "shield",
+        "closer"
+      ],
+      "hook_pattern": "D4 the moment",
+      "concept": "the-moment",
+      "voice": "daniel"
+    },
+    "15s": {
+      "duration": 15,
+      "scenes": [
+        "hook15",
+        "convo15",
+        "number",
+        "closer"
+      ],
+      "concept": "the-moment",
+      "voice": "daniel"
+    },
+    "06s-bumper": {
+      "duration": 6,
+      "scenes": [
+        "number6",
+        "closer6"
+      ],
+      "concept": "the-moment",
+      "voice": "daniel"
+    },
+    "30s-silent": {
+      "duration": 30,
+      "scenes": [
+        "t1",
+        "t2",
+        "convo",
+        "flow",
+        "number",
+        "pills",
+        "t7",
+        "closer"
+      ],
+      "concept": "silent-scroller",
+      "silent": true,
+      "bet": "Built for muted feeds."
+    }
+  },
+  "kit": [
+    {
+      "d": "30s-hookA",
+      "fmt": "16x9",
+      "folder": "master"
+    },
+    {
+      "d": "30s-hookB",
+      "fmt": "16x9",
+      "folder": "master"
+    },
+    {
+      "d": "30s-hookC",
+      "fmt": "16x9",
+      "folder": "master"
+    },
+    {
+      "d": "30s-hookA",
+      "fmt": "9x16",
+      "folder": "formats"
+    },
+    {
+      "d": "30s-hookA",
+      "fmt": "1x1",
+      "folder": "formats",
+      "fps": 25
+    },
+    {
+      "d": "15s",
+      "fmt": "16x9",
+      "folder": "cutdowns"
+    },
+    {
+      "d": "15s",
+      "fmt": "9x16",
+      "folder": "cutdowns"
+    },
+    {
+      "d": "06s-bumper",
+      "fmt": "16x9",
+      "folder": "cutdowns"
+    },
+    {
+      "d": "30s-silent",
+      "fmt": "9x16",
+      "folder": "formats"
+    }
+  ],
+  "ad_text": {
+    "headlines": [
+      "IT requests, closed in chat",
+      "Agents for IT, inside your team chat"
+    ],
+    "descriptions": [
+      "Eight in ten closed. No ticket.",
+      "Policy, access, audit. Done."
+    ]
+  },
+  "voices": {
+    "daniel": {
+      "voice_id": "onwK4e9ZLuTAKqWW03F9",
+      "voice_name": "Daniel",
+      "model": "eleven_multilingual_v2",
+      "settings": {
+        "stability": 0.55,
+        "similarity_boost": 0.75,
+        "style": 0.1,
+        "speed": 1.15
+      }
+    }
+  },
+  "claims": [
+    {
+      "claim": "Eight in ten requests closed without a person",
+      "source": "none, sample product",
+      "status": "Illustrative, fictional product"
+    }
+  ]
+}

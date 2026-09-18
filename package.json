@@ -1,0 +1,11 @@
+{
+  "name": "video-ad-builder",
+  "version": "1.0.0",
+  "description": "Claude Code skill that builds paid-media video ad kits",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  },
+  "private": true
+}

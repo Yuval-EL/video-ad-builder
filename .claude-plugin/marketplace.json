@@ -1,0 +1,11 @@
+{
+  "name": "yuval-plugins",
+  "owner": { "name": "Yuval Eliav" },
+  "plugins": [
+    {
+      "name": "video-ad-builder",
+      "source": "./",
+      "description": "Turns a brief or ten answers into a paid-media video ad kit: several creative concepts, three tested openings, three shapes, cutdowns, captions, and a campaign plan."
+    }
+  ]
+}

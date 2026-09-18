@@ -1,0 +1,9 @@
+{
+  "name": "Lumen Desk",
+  "note": "Fictional product used to test the builder. Nothing here is a real claim.",
+  "font": "Inter",
+  "fontUrl": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=block",
+  "colors": { "dark": "#0E1726", "primary": "#0F766E", "accent": "#FBBF24", "soft1": "#CCFBF1", "soft2": "#E0F2FE", "card": "#FFFFFF", "ink": "#111827", "light": "#FFFFFF", "ok": "#22C55E" },
+  "wordmark_file": "branding/wordmark.svg",
+  "icon_file": "branding/icon.svg"
+}
